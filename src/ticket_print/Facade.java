@@ -1,40 +1,46 @@
 package ticket_print;
-
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Properties;
-
 import com.google.zxing.WriterException;
+import Ticket_Modelo.Creador_Concreto_Es;
+import Ticket_Modelo.Creador_Concreto_In;
+import Ticket_Modelo.Creador_Facturas;
+import Ticket_Modelo.Modelo;
 
 public class Facade {
 
-    Properties properties = new Properties();
-
     // Modelo de la impresión.
-    private Model modelo;
-
-    public Model getModelo() {
-        return modelo;
-    }
-
-    public void setModelo(Model modelo) {
-        this.modelo = modelo;
-    }
+    private Creador_Facturas creadorFactura;
+    private Modelo modelo;
+    private utility utility;
+    private QRCodeGenerator generatorQR;
+    private Singleton_Lector singletonLector;
 
     // Sobrecarga de constructores de la fachada.
-    public Facade(String moneda, String nom_casino) {
+    public Facade(String moneda, String nom_casino, String idioma) {
 
-        modelo = new Model(moneda, nom_casino);
-
+        // Dependiendo del idioma, se crea el modelo correspondiente.
+        // Se utiliza el patrón Factory Method para crear el modelo.
+        switch (idioma) {
+            case "Esp":
+                creadorFactura = new Creador_Concreto_Es();
+                break;
+            case "Ing":
+                creadorFactura = new Creador_Concreto_In();
+                break;
+            default:
+                break;
+        }
+        // Inicialización de los métodos del modelo.
+        modelo = creadorFactura.inicializadorFactura(moneda, nom_casino);
+        
     }
 
-    public Facade() {
-    }
+    public void print_ticket(int modulo, int fichas, int denominacion, int ticket) {
 
-    public void print_ticket(int modulo, int fichas, int denominacion, int ticket, String htmlString) {
-
-        utility utility = new utility();
-        QRCodeGenerator generatorQR = new QRCodeGenerator();
+        utility = new utility();
+        generatorQR = new QRCodeGenerator();
+        singletonLector = Singleton_Lector.getInstance();
+        String htmlString = singletonLector.read_format(modelo.formato_factura()); // Carga el formato HTML desde el archivo properties.
 
         generatorQR.setData(modulo + "-" + fichas + "-" + denominacion + "-" + ticket); // Datos grabados en el qr.
         String filePath = "qrcode.png"; // Nombre del archivo de salida, con el qr.
@@ -61,30 +67,6 @@ public class Facade {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }
-
-    public String read_format() {
-
-        Properties properties = new Properties();
-
-        try (FileInputStream input = new FileInputStream("template.properties")) {
-
-            // Cargar el archivo .properties
-            properties.load(input);
-
-            // Obtener la cadena HTML
-            String htmlString = properties.getProperty("html.template");
-
-            System.out.println(htmlString);
-
-            return htmlString;
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
 
     }
 

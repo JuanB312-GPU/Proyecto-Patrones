@@ -1,13 +1,12 @@
-package ticket_print;
+package Ticket_Modelo;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
 
-public class Model {
+public abstract class Modelo {
 
     // Los valores iniciales se hacen en base a valores predeterminados.
     private int modulo = 0;
@@ -19,12 +18,16 @@ public class Model {
     private String nom_casino = "Jisnel";
 
     // Define el formato de la fecha y la hora para la factura.
-    private SimpleDateFormat fecha = new SimpleDateFormat("yyyy/MM/dd   HH:mm:ss");
-    private RuleBasedNumberFormat formateador = new RuleBasedNumberFormat(Locale.forLanguageTag("es"),
-            RuleBasedNumberFormat.SPELLOUT);
+    private SimpleDateFormat fecha;
+    // Formateador de números para convertir el premio a palabras.
+    private RuleBasedNumberFormat formateador;
 
-    public Model(String moneda, String nom_casino) {
+    // Métodos abstractos que deben ser implementados por las subclases.
+    public abstract void fecha_formato();
+    public abstract void lenguaje_moneda();
+    public abstract String formato_factura();
 
+    public Modelo(String moneda, String nom_casino) {
         this.moneda = moneda;
         this.nom_casino = nom_casino;
     }
@@ -50,6 +53,13 @@ public class Model {
     }
 
     // Set's y Get's para cada variable.
+    public RuleBasedNumberFormat getFormateador() {
+        return formateador;
+    }
+    public void setFormateador(RuleBasedNumberFormat formateador) {
+        this.formateador = formateador;
+    }
+
     public String getNom_casino() {
         return nom_casino;
     }
