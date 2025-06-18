@@ -1,4 +1,4 @@
-package Ticket_Modelo;
+package ticketmodelo;
 
 import java.sql.Timestamp;
 import java.text.DecimalFormat;

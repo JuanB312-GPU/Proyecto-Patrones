@@ -1,10 +1,11 @@
 package ticket_print;
 import java.io.IOException;
 import com.google.zxing.WriterException;
-import Ticket_Modelo.Creador_Concreto_Es;
-import Ticket_Modelo.Creador_Concreto_In;
-import Ticket_Modelo.Creador_Facturas;
-import Ticket_Modelo.Modelo;
+import ticketmodelo.Creador_Concreto_Es;
+import ticketmodelo.Creador_Concreto_In;
+import ticketmodelo.Creador_Facturas;
+import ticketmodelo.Modelo;
+
 
 public class Facade {
 

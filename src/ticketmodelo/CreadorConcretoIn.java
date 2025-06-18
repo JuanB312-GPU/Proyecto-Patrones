@@ -1,4 +1,4 @@
-package Ticket_Modelo;
+package ticketmodelo;
 
 public class Creador_Concreto_In extends Creador_Facturas {
 
