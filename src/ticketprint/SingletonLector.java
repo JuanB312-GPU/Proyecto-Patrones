@@ -1,20 +1,20 @@
-package ticket_print;
+package ticketprint;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
-public class Singleton_Lector {
+public class SingletonLector {
 
     // Patrón Singleton para la clase Singleton_Lector.
-    private static Singleton_Lector instance;
+    private static SingletonLector instance;
     // Objeto properties.
     private Properties properties;
 
     // Se declara el método que permite obtener la instancia de la clase Singleton_Lector.
-    public static Singleton_Lector getInstance() {
+    public static SingletonLector getInstance() {
         if (instance == null) {
-            instance = new Singleton_Lector();
+            instance = new SingletonLector();
         }
         return instance;
     }

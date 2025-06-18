@@ -1,6 +1,6 @@
-package Ticket_Modelo;
+package ticketmodelo;
 
-public abstract class Creador_Facturas {
+public abstract class CreadorTickets {
 
     // Método abstracto para crear una factura.
     public abstract Modelo metodoFabrica(String moneda, String nom_casino);

@@ -1,4 +1,4 @@
-package ticket_print;
+package ticketprint;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

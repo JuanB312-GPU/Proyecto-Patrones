@@ -1,13 +1,13 @@
-package Ticket_Modelo;
+package ticketmodelo;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 import com.ibm.icu.text.RuleBasedNumberFormat;
 
-public class Modelo_Es extends Modelo {
+public class ModeloEs extends Modelo {
 
-    public Modelo_Es(String moneda, String nom_casino) {
+    public ModeloEs(String moneda, String nom_casino) {
         super(moneda, nom_casino);
     }
 
