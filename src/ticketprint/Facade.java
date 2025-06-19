@@ -5,6 +5,7 @@ import ticketmodelo.CreadorConcretoEs;
 import ticketmodelo.CreadorConcretoIn;
 import ticketmodelo.CreadorTickets;
 import ticketmodelo.Modelo;
+import validarQR.*;
 
 
 public class Facade {
@@ -40,6 +41,36 @@ public class Facade {
 
         // Dependiendo de la conversión, se decora el modelo con el decorador correspondiente.
         modelo.var_model(modulo, fichas, denominacion, ticket);
+        // Construir cadena QR como string
+        String datosQR = modulo + "-" + fichas + "-" + denominacion + "-" + ticket;
+
+        // ======== PATRÓN ESTRATEGIA =========
+        ContextoEstrategia contexto = new ContextoEstrategia();
+        contexto.setEstrategia(new ValidacionSegura());
+        boolean esValidoFormato = contexto.validar(datosQR);
+
+        // ======== PATRÓN CADENA DE RESPONSABILIDAD =========
+        Manejador m1 = new ManejadorFormato();
+        Manejador m2 = new ManejadorContenido();
+        Manejador m3 = new ManejadorDuplicado();
+
+        m1.setSucesor(m2);
+        m2.setSucesor(m3);
+
+        boolean pasaCadena = m1.procesarPeticion(datosQR);
+
+        // ======== PATRÓN VISITOR =========
+        Visitador visitador = new VisitadorConsola();
+
+        if (esValidoFormato && pasaCadena) {
+            QRValido valido = new QRValido(datosQR);
+            valido.aceptar(visitador);
+        } else {
+            QRInvalido invalido = new QRInvalido(datosQR);
+            invalido.aceptar(visitador);
+            return; // Termina el método si el QR no pasa las validaciones
+        }
+        // Decorar el modelo dependiendo de la conversión
         switch (conversion) {
             case 0: // Sin conversión.
                 modelo.var_premio(); // Calcula el premio en la moneda original.
