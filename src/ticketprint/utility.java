@@ -56,9 +56,9 @@ public class utility {
 
             g2d.dispose();
 
-            //PrintPreview prueba = new  PrintPreview();
+            PrintPreview prueba = new  PrintPreview();
 
-            //prueba.showPrintPreview(this.rotate90DegreesClockwise(combinedImage));
+            prueba.showPrintPreview(this.rotate90DegreesClockwise(combinedImage));
 
             // Convertir el BufferedImage a un array de bytes para la impresión
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

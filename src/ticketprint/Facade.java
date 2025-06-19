@@ -1,46 +1,63 @@
-package ticket_print;
+package ticketprint;
 import java.io.IOException;
 import com.google.zxing.WriterException;
-import ticketmodelo.Creador_Concreto_Es;
-import ticketmodelo.Creador_Concreto_In;
-import ticketmodelo.Creador_Facturas;
+import ticketmodelo.CreadorConcretoEs;
+import ticketmodelo.CreadorConcretoIn;
+import ticketmodelo.CreadorTickets;
 import ticketmodelo.Modelo;
 
 
 public class Facade {
 
     // Modelo de la impresión.
-    private Creador_Facturas creadorFactura;
+    private CreadorTickets creadorFactura;
     private Modelo modelo;
     private utility utility;
     private QRCodeGenerator generatorQR;
-    private Singleton_Lector singletonLector;
+    private SingletonLector singletonLector;
 
     // Sobrecarga de constructores de la fachada.
-    public Facade(String moneda, String nom_casino, String idioma) {
+    public Facade(String moneda, String nom_casino, String idioma, String moneda_divisa) {
 
         // Dependiendo del idioma, se crea el modelo correspondiente.
         // Se utiliza el patrón Factory Method para crear el modelo.
         switch (idioma) {
             case "Esp":
-                creadorFactura = new Creador_Concreto_Es();
+                creadorFactura = new CreadorConcretoEs();
                 break;
             case "Ing":
-                creadorFactura = new Creador_Concreto_In();
+                creadorFactura = new CreadorConcretoIn();
                 break;
             default:
                 break;
         }
         // Inicialización de los métodos del modelo.
-        modelo = creadorFactura.inicializadorFactura(moneda, nom_casino);
+        modelo = creadorFactura.inicializadorFactura(moneda, nom_casino, moneda_divisa);
         
     }
 
-    public void print_ticket(int modulo, int fichas, int denominacion, int ticket) {
+    public void print_ticket(int modulo, int fichas, int denominacion, int ticket, int conversion) {
+
+        // Dependiendo de la conversión, se decora el modelo con el decorador correspondiente.
+        modelo.var_model(modulo, fichas, denominacion, ticket);
+        switch (conversion) {
+            case 0: // Sin conversión.
+                modelo.var_premio(); // Calcula el premio en la moneda original.
+                break;
+            case 1: // Conversión a dólares.
+                modelo = new ticketmodelo.DecoradorDolares(modelo);
+                System.out.println(modelo.getNom_casino() + " - " + modelo.getPremio() + " - " + modelo.getPremio_letras() + " - " + modelo.getMoneda());
+                break;
+            case 2: // Conversión a euros.
+                modelo = new ticketmodelo.DecoradorEuros(modelo);
+                break;
+            default:
+                break;
+        }
 
         utility = new utility();
         generatorQR = new QRCodeGenerator();
-        singletonLector = Singleton_Lector.getInstance();
+        singletonLector = SingletonLector.getInstance();
         String htmlString = singletonLector.read_format(modelo.formato_factura()); // Carga el formato HTML desde el archivo properties.
 
         generatorQR.setData(modulo + "-" + fichas + "-" + denominacion + "-" + ticket); // Datos grabados en el qr.
@@ -57,18 +74,23 @@ public class Facade {
         }
 
         try {
-            // Los datos variables entran en el modelo...
-            modelo.var_model(modulo, fichas, denominacion, ticket);
-
+            // Reemplazar los marcadores en el HTML con los datos del modelo.
             String receiptData = String.format(htmlString, modelo.getNom_casino(), modelo.getPremio(),
-                    modelo.getPremio_letters(), modelo.getMoneda(), modelo.getModulo(),
+                    modelo.getPremio_letras(), modelo.getMoneda(), modelo.getModulo(),
                     modelo.getFichas(), modelo.getDenominacion(), modelo.getFecha(), modelo.getTicket());
+            System.out.println(receiptData);
             utility.print_service(receiptData, 360);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+    public static void main(String[] args) {
+        // Ejemplo de uso de la fachada.
+        Facade facade = new Facade("Pesos Colombianos", "Royale", "Esp", "COP");
+        facade.print_ticket(1, 120, 1000, 123456, 2); // Imprime un ticket con conversión a dólares.
     }
 
 }

@@ -7,14 +7,14 @@ import com.ibm.icu.text.RuleBasedNumberFormat;
 
 public class ModeloEs extends Modelo {
 
-    public ModeloEs(String moneda, String nom_casino) {
-        super(moneda, nom_casino);
+    public ModeloEs(String moneda, String nom_casino, String moneda_divisa) {
+        super(moneda, nom_casino , moneda_divisa);
     }
 
     @Override
     public void fecha_formato() {
         // Implementación específica para el formato de fecha en español.
-        setFecha(new SimpleDateFormat("yyyy/MM/dd   HH:mm:ss"));
+        super.setFecha(new SimpleDateFormat("yyyy/MM/dd   HH:mm:ss"));
         // Aquí se puede definir cómo se debe mostrar la fecha en el ticket.
     }
 

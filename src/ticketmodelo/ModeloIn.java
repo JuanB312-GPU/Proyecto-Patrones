@@ -7,8 +7,8 @@ import com.ibm.icu.text.RuleBasedNumberFormat;
 
 public class ModeloIn extends Modelo {
 
-    public ModeloIn(String moneda, String nom_casino) {
-        super(moneda, nom_casino);
+    public ModeloIn(String moneda, String nom_casino, String moneda_divisa) {
+        super(moneda, nom_casino, moneda_divisa);
     }
 
     @Override

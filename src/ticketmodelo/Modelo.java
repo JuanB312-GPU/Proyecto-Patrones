@@ -14,8 +14,10 @@ public abstract class Modelo {
     private int denominacion = 0;
     private String premio = "";
     private int ticket = 0;
-    private String moneda = "Pesos";
+    private String moneda = "Pesos Colombianos";
+    private String moneda_divisa = "COP";
     private String nom_casino = "Jisnel";
+    private String premio_letras = ""; 
 
     // Define el formato de la fecha y la hora para la factura.
     private SimpleDateFormat fecha;
@@ -27,11 +29,20 @@ public abstract class Modelo {
     public abstract void lenguaje_moneda();
     public abstract String formato_factura();
 
-    public Modelo(String moneda, String nom_casino) {
+    public Modelo(String moneda, String nom_casino, String moneda_divisa) {
         this.moneda = moneda;
         this.nom_casino = nom_casino;
+        this.moneda_divisa = moneda_divisa;
     }
 
+    /**
+     * Método para inicializar el modelo con los valores de las variables.
+     * 
+     * @param modulo       El número del módulo.
+     * @param fichas       La cantidad de fichas.
+     * @param denominacion La denominación de las fichas.
+     * @param ticket       El número del ticket.
+     */
     public void var_model(int modulo, int fichas, int denominacion, int ticket) {
 
         this.modulo = modulo;
@@ -39,17 +50,33 @@ public abstract class Modelo {
         this.denominacion = denominacion;
         this.ticket = ticket;
 
-        // Formatea el valor del premio a una cadena para visualizar las cifras de
-        // miles.
+    }
+
+    /**
+     * Método para calcular el premio en base a la denominación y las fichas.
+     * Formatea el premio a letras y lo almacena en la variable premio_letras.
+     */
+    public void var_premio() {
+
+        // Formatear el premio a letras.
         DecimalFormat formato = new DecimalFormat("#,###");
-        this.premio = formato.format(denominacion * fichas).replace(",", ".");
+        premio = formato.format(denominacion * fichas).replace(",", ".");
+        premio_letras = (formateador.format(this.getDenominacion() * this.getFichas())).toUpperCase();
 
     }
 
-    // Retorna el premio en palabras.
-    public String getPremio_letters() {
+    public String getMoneda_divisa() {
+        return moneda_divisa;
+    }
+    public void setMoneda_divisa(String moneda_divisa) {
+        this.moneda_divisa = moneda_divisa;
+    }
 
-        return (formateador.format(this.getDenominacion() * this.getFichas())).toUpperCase();
+    public String getPremio_letras() {
+        return premio_letras;
+    }
+    public void setPremio_letras(String premio_letras) {
+        this.premio_letras = premio_letras;
     }
 
     // Set's y Get's para cada variable.
@@ -96,6 +123,10 @@ public abstract class Modelo {
     public String getFecha() {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         return fecha.format(timestamp);
+    }
+
+    public SimpleDateFormat getFecha_Format() {
+        return fecha;
     }
 
     public void setFecha(SimpleDateFormat sdf3) {
