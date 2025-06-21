@@ -1,4 +1,4 @@
-package ticketprint;
+package ticketimpresion;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
