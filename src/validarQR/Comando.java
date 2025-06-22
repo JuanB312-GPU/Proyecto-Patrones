@@ -1,5 +1,5 @@
 package validarQR;
 
 public interface Comando {
-    boolean ejecutar();
+    public boolean ejecutar();
 }

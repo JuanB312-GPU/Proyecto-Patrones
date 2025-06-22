@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class PrintPreview {
+public class ImpresionPantalla {
 
     public void showPrintPreview(BufferedImage qrImage) {
         // Crear un JFrame para la ventana de previsualización

@@ -20,7 +20,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.MediaSizeName;
 import javax.swing.JEditorPane;
 
-public class utility {
+public class Utilidad {
 
     // Procedimiento necesario para la impresión del ticket.
     public void print_service(String htmlContent, int height_html) {
@@ -56,7 +56,7 @@ public class utility {
 
             g2d.dispose();
 
-            PrintPreview prueba = new  PrintPreview();
+            ImpresionPantalla prueba = new  ImpresionPantalla();
 
             prueba.showPrintPreview(this.rotate90DegreesClockwise(combinedImage));
 

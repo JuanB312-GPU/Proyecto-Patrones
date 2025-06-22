@@ -14,29 +14,29 @@ import ticketmodelo.CreadorConcretoIn;
 import ticketmodelo.CreadorTickets;
 import ticketmodelo.Modelo;
 
-public class Facade {
+public class Fachada {
 
-    private CreadorTickets creadorFactura;
+    private CreadorTickets creadorTicket;
     private Modelo modelo;
-    private utility utility;
-    private QRCodeGenerator generatorQR;
+    private Utilidad utilidad;
+    private QRCodigoGenerador generadorQR;
     private SingletonLector singletonLector;
 
-    public Facade(String moneda, String nom_casino, String idioma, String moneda_divisa) {
+    public Fachada(String moneda, String nom_casino, String idioma, String moneda_divisa) {
         switch (idioma) {
             case "Esp":
-                creadorFactura = new CreadorConcretoEs();
+                creadorTicket = new CreadorConcretoEs();
                 break;
             case "Ing":
-                creadorFactura = new CreadorConcretoIn();
+                creadorTicket = new CreadorConcretoIn();
                 break;
             default:
                 break;
         }
-        modelo = creadorFactura.inicializadorFactura(moneda, nom_casino, moneda_divisa);
+        modelo = creadorTicket.inicializadorTicket(moneda, nom_casino, moneda_divisa);
     }
 
-    public void print_ticket(int modulo, int fichas, int denominacion, int ticket, int conversion) {
+    public void impresionTicket(int modulo, int fichas, int denominacion, int ticket, int conversion) {
         modelo.var_model(modulo, fichas, denominacion, ticket);
 
         // === construir string base ===
@@ -82,9 +82,9 @@ public class Facade {
                 break;
         }
 
-        utility = new utility();
-        generatorQR = new QRCodeGenerator();
-        singletonLector = SingletonLector.getInstance();
+        utilidad = new Utilidad();
+        generadorQR = new QRCodigoGenerador();
+        singletonLector = SingletonLector.getInstancia();
         String htmlString = singletonLector.read_format(modelo.formato_factura());
 
         if (htmlString == null) {
@@ -92,13 +92,13 @@ public class Facade {
             return;
         }
 
-        generatorQR.setData(datosQR);
+        generadorQR.setData(datosQR);
         String filePath = "qrcode.png";
         int width = 300;
         int height = 300;
 
         try {
-            generatorQR.generateQRCode(filePath, width, height);
+            generadorQR.generateQRCode(filePath, width, height);
             System.out.println("Código QR generado en: " + filePath);
         } catch (WriterException | IOException e) {
             System.out.println("Ocurrió un error al generar el código QR: " + e.getMessage());
@@ -109,7 +109,7 @@ public class Facade {
                     modelo.getPremio_letras(), modelo.getMoneda(), modelo.getModulo(),
                     modelo.getFichas(), modelo.getDenominacion(), modelo.getFecha(), modelo.getTicket());
             System.out.println(receiptData);
-            utility.print_service(receiptData, 360);
+            utilidad.print_service(receiptData, 360);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -117,8 +117,8 @@ public class Facade {
     }
 
     public static void main(String[] args) {
-        Facade facade = new Facade("Pesos Colombianos", "Royale", "Esp", "COP");
-        facade.print_ticket(1, 120, 1000, 123456, 2);
+        Fachada facade = new Fachada("Pesos Colombianos", "Royale", "Esp", "COP");
+        facade.impresionTicket(1, 120, 1000, 123456, 2);
     }
 }
 

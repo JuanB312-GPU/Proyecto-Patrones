@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // Genera el código QR usando una librería de C. abierto.
-public class QRCodeGenerator {
+public class QRCodigoGenerador {
 
     // Para mejoras futuras, la data grabada en el qr debe ser manejada por esta variable...
     private String data;

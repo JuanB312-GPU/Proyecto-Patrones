@@ -42,3 +42,5 @@ public abstract class DecoradorTicket extends Modelo {
     // Puedes agregar más métodos decorados aquí si es necesario.
 
 }
+
+

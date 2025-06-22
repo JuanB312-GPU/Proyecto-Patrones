@@ -1,14 +1,14 @@
 package validarQR;
 
 import encriptadorQR.QRDecoder;
-import ticketimpresion.Facade;
+import ticketimpresion.Fachada;
 
 public class PruebaValidador {
 
     public static void main(String[] args) {
     // Paso 1: Crear ticket (Fachada)
-    Facade fachada = new Facade("Pesos Colombianos", "Royale", "Esp", "COP");
-    fachada.print_ticket(1, 120, 1000, 123456, 2);  // Ticket impreso con QR
+    Fachada fachada = new Fachada("Pesos Colombianos", "Royale", "Esp", "COP");
+    fachada.impresionTicket(1, 120, 1000, 123456, 2);  // Ticket impreso con QR
     
     String datosLeidosDesdeQR = "{\"qr\":\"MS0xMjAtMTAwMC0xMjM0NTY=\"}";
 

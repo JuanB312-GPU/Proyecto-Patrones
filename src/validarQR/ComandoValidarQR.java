@@ -2,6 +2,7 @@ package validarQR;
 
 public class ComandoValidarQR implements Comando {
 
+    private ContextoEstrategia contexto;
     private final String datosQR;
 
     public ComandoValidarQR(String datosQR) {
@@ -11,7 +12,7 @@ public class ComandoValidarQR implements Comando {
     @Override
     public boolean ejecutar() {
         // Estrategia
-        ContextoEstrategia contexto = new ContextoEstrategia();
+        contexto = new ContextoEstrategia();
         contexto.setEstrategia(new ValidacionSegura());
         boolean esValidoFormato = contexto.validar(datosQR);
 

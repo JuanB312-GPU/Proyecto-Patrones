@@ -7,31 +7,31 @@ import java.util.Properties;
 public class SingletonLector {
 
     // Patrón Singleton para la clase Singleton_Lector.
-    private static SingletonLector instance;
+    private static SingletonLector instancia;
     // Objeto properties.
-    private Properties properties;
+    private Properties propiedades;
 
     // Se declara el método que permite obtener la instancia de la clase Singleton_Lector.
-    public static SingletonLector getInstance() {
-        if (instance == null) {
-            instance = new SingletonLector();
+    public static SingletonLector getInstancia() {
+        if (instancia == null) {
+            instancia = new SingletonLector();
         }
-        return instance;
+        return instancia;
     }
 
     public String read_format(String nombre_plantilla) {
 
-        properties = new Properties();
+        propiedades = new Properties();
         // Se inicializa el objeto properties para leer el archivo .properties
         // que contiene el formato HTML.
 
         try (FileInputStream input = new FileInputStream(nombre_plantilla + ".properties")) {
 
             // Cargar el archivo .properties
-            properties.load(input);
+            propiedades.load(input);
 
             // Obtener la cadena HTML
-            String htmlString = properties.getProperty("html.template");
+            String htmlString = propiedades.getProperty("html.template");
 
             System.out.println(htmlString);
 
